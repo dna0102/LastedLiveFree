@@ -1,0 +1,18 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "Lasted Live Free",
+  "outputfilename": "LastedLiveFree",
+  "frontend:dir": "frontend",
+  "frontend:install": "",
+  "frontend:build": "",
+  "author": {
+    "name": "Lasted Live"
+  },
+  "info": {
+    "companyName": "Lasted Live",
+    "productName": "Lasted Live Free",
+    "productVersion": "1.0.0",
+    "copyright": "Lasted Live",
+    "comments": "TikTok LIVE studio (free edition)"
+  }
+}
