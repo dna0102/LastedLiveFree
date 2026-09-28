@@ -459,6 +459,43 @@ func (s *Server) handleWishesStart(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	items, opts := readWishes(r)
+	if len(items) == 0 {
+		writeErr(w, 400, "add at least one wish")
+		return
+	}
+	// TikTok checks /start against the wishes saved on the account.
+	if err := cl.VPSave(items, opts); err != nil {
+		writeErr(w, 502, "couldn't save your wishes to TikTok: "+err.Error())
+		return
+	}
+	d, err := cl.VPStart(room, items, opts)
+	if err != nil {
+		writeErr(w, 502, err.Error())
+		return
+	}
+	writeJSON(w, 200, d)
+}
+
+// handleWishesSave saves the wishes to the account without starting a round.
+func (s *Server) handleWishesSave(w http.ResponseWriter, r *http.Request) {
+	a := s.account(w, r)
+	if a == nil {
+		return
+	}
+	cl := s.client(w, a)
+	if cl == nil {
+		return
+	}
+	items, opts := readWishes(r)
+	if err := cl.VPSave(items, opts); err != nil {
+		writeErr(w, 502, err.Error())
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true})
+}
+
+func readWishes(r *http.Request) ([]tiktok.Wish, tiktok.VPOptions) {
 	var b struct {
 		Items []struct {
 			GiftID int    `json:"gift_id"`
@@ -475,10 +512,6 @@ func (s *Server) handleWishesStart(w http.ResponseWriter, r *http.Request) {
 	for _, it := range b.Items {
 		items = append(items, tiktok.Wish{GiftID: it.GiftID, Label: it.Label})
 	}
-	if len(items) == 0 {
-		writeErr(w, 400, "add at least one wish")
-		return
-	}
 	opts := tiktok.DefaultVPOptions()
 	if b.DisplayMode != 0 {
 		opts.DisplayMode = b.DisplayMode
@@ -487,10 +520,5 @@ func (s *Server) handleWishesStart(w http.ResponseWriter, r *http.Request) {
 		opts.RoundDurationSec = b.RoundDurationSec
 	}
 	opts.HasScore, opts.HasDuration, opts.EnableAutoRestart = b.HasScore, b.HasDuration, b.AutoRestart
-	d, err := cl.VPStart(room, items, opts)
-	if err != nil {
-		writeErr(w, 502, err.Error())
-		return
-	}
-	writeJSON(w, 200, d)
+	return items, opts
 }

@@ -149,6 +149,7 @@ func New(m *manager.Manager, setup *ffsetup.Installer) http.Handler {
 	mux.HandleFunc("POST /api/accounts/{id}/poll/end", s.handlePollEnd)
 	mux.HandleFunc("GET /api/accounts/{id}/poll/query", s.handlePollQuery)
 	mux.HandleFunc("GET /api/accounts/{id}/wishes", s.handleWishesGet)
+	mux.HandleFunc("POST /api/accounts/{id}/wishes/save", s.handleWishesSave)
 	mux.HandleFunc("POST /api/accounts/{id}/wishes/start", s.handleWishesStart)
 
 	// unknown /api paths get a JSON 404; everything else is served by Wails

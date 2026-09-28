@@ -711,10 +711,17 @@ async function openWishes() {
       {
         label: "Save",
         cls: "ghost",
-        fn: () => {
+        fn: async (btn) => {
           collect();
           LS.set("wishes." + id, st);
-          toast("Wishes saved", "ok");
+          await withSpinner(btn, "", async () => {
+            try {
+              await api("POST", acctPath("/wishes/save", id), st);
+              toast("Wishes saved", "ok");
+            } catch (e) {
+              toast("Couldn't save to TikTok: " + e.message, "err");
+            }
+          });
         },
       },
       {
