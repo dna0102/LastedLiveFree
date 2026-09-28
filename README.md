@@ -44,14 +44,22 @@ Viewer Wishes, and watch comments, gifts and your top viewers come in.
 This is the free edition. It runs one account on your own internet
 connection, and videos loop until you end the LIVE.
 
-The paid version adds:
+Paid-only tools show up greyed out in Studio with a **Paid** tag.
+
+## Lasted Live (official version)
+
+The official version has everything:
 
 - several accounts LIVE at once, each through its own proxy
 - moderation (muted words, moderators, kicked users)
 - LIVE standing alerts for new restrictions
 - ending the LIVE automatically when a video finishes
 
-Paid-only tools show up greyed out in Studio with a **Paid** tag.
+**To buy it, get in touch at [lasted.dev](https://lasted.dev).**
+
+![Lasted Live dashboard with two accounts, one of them LIVE](docs/dashboard.png)
+
+![Lasted Live Studio with the account switcher open](docs/studio.png)
 
 ## Build it yourself
 
